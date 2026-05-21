@@ -22,7 +22,8 @@ Rails.application.configure do
   # config.asset_host = "http://assets.example.com"
 
   # Active Storage Cloudflare R2
-  config.active_storage.service = :r2
+  # storage.yml defines the "cloudflare" service that maps to R2
+  config.active_storage.service = :cloudflare
 
   # Assume all access to the app is happening through a SSL-terminating reverse proxy.
   # config.assume_ssl = true

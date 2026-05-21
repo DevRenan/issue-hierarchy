@@ -28,8 +28,12 @@ Rails.application.configure do
   # Change to :null_store to avoid any caching.
   config.cache_store = :memory_store
 
-  # Active Storage local
-  config.active_storage.service = :local
+  # Active Storage: prefer Cloudflare R2 when R2 env vars are set, otherwise use local disk
+  if ENV['R2_BUCKET'].present? && ENV['R2_ACCESS_KEY_ID'].present? && ENV['R2_SECRET_ACCESS_KEY'].present? && ENV['R2_ENDPOINT'].present?
+    config.active_storage.service = :cloudflare
+  else
+    config.active_storage.service = :local
+  end
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false

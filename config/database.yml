@@ -22,7 +22,12 @@ default: &default
 
 development:
   <<: *default
+  # Use full DATABASE_URL in development when provided (e.g. to point to remote Postgres)
+  <% if ENV['DATABASE_URL'] %>
+  url: <%= ENV['DATABASE_URL'] %>
+  <% else %>
   database: issue_tracking_development
+  <% end %>
 
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
@@ -87,9 +92,8 @@ test:
 production:
   primary: &primary_production
     <<: *default
-    database: issue_tracking_production
-    username: issue_tracking
-    password: <%= ENV["ISSUE_TRACKING_DATABASE_PASSWORD"] %>
+    # Use full DATABASE_URL in production (eg. Render provided URL)
+    url: <%= ENV['DATABASE_URL'] %>
   cache:
     <<: *primary_production
     database: issue_tracking_production_cache

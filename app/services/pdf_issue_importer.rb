@@ -64,9 +64,9 @@ class PdfIssueImporter
   private
 
   def run_python_parser
-    python_bin = Rails.root.join("venv/bin/python").to_s
+    # python_bin = Rails.root.join("venv/bin/python").to_s
     script = Rails.root.join("scripts/import_inspection_pdf.py")
-    stdout, stderr, status = Open3.capture3(python_bin, script.to_s, @pdf_path.to_s)
+    stdout, stderr, status = Open3.capture3("python3", script.to_s, @pdf_path.to_s)
     unless status.success?
       Rails.logger.error("PDF import failed: #{stderr}")
       return nil
