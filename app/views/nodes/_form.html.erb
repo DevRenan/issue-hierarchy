@@ -1,0 +1,7 @@
+<%= form.collection_select(
+      :parent_id,
+      Node.all,
+      :id,
+      :name,
+      include_blank: true
+    ) %>
