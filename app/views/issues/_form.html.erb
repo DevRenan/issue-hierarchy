@@ -43,6 +43,24 @@
       </div>
     </div>
 
+    <div>
+      <label class="block text-sm font-semibold mb-1">Attachments</label>
+      <div class="border-2 border-dashed rounded-lg p-4 bg-gray-50 hover:bg-gray-100 transition flex flex-col items-center justify-center">
+        <%= form.file_field :files, multiple: true, direct_upload: true, class: "block w-full text-sm text-gray-700 file:bg-blue-50 file:border-0 file:rounded file:px-3 file:py-2 file:text-blue-700 file:font-semibold cursor-pointer" %>
+        <span class="text-xs text-gray-400 mt-2">Max 10MB por arquivo. Imagens, PDFs, DOC/DOCX.</span>
+      </div>
+      <% if issue.files.attached? %>
+        <div class="mt-2 grid grid-cols-2 gap-2">
+          <% issue.files.each do |file| %>
+            <div class="flex items-center gap-2 bg-white border rounded p-2">
+              <%= link_to file.filename, rails_blob_path(file, disposition: "attachment"), class: "text-blue-600 hover:underline text-xs" %>
+              <span class="text-gray-400 text-xs"><%= number_to_human_size(file.byte_size) %></span>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
     <div class="flex gap-2 mt-6">
       <%= form.submit class: "px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500" %>
       <%= link_to "Cancel", issues_path, class: "px-4 py-2 bg-gray-100 rounded-md hover:bg-gray-200" %>

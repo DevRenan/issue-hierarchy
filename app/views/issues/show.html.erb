@@ -46,10 +46,24 @@
     <aside class="lg:col-span-1">
       <div class="bg-white border rounded-lg p-4 shadow-sm">
         <h3 class="font-semibold mb-3">Attachments</h3>
-        <% if @issue.attachments.any? %>
+        <% if @issue.files.attached? %>
           <div class="space-y-2">
-            <% @issue.attachments.each do |att| %>
-              <%= render partial: "attachments/attachment", locals: { attachment: att } %>
+            <% @issue.files.each do |file| %>
+              <div class="flex items-center gap-2 bg-gray-50 border rounded p-2 group">
+                <% if file.image? %>
+                  <%= image_tag file.variant(resize_to_limit: [64, 64]), class: "w-10 h-10 rounded object-cover border" %>
+                <% else %>
+                  <span class="inline-block w-10 h-10 bg-gray-200 rounded flex items-center justify-center">
+                    <%= file.filename.extension.upcase %>
+                  </span>
+                <% end %>
+                <div class="flex-1 min-w-0">
+                  <div class="font-medium text-xs truncate"><%= file.filename %></div>
+                  <div class="text-gray-400 text-xs"><%= file.created_at&.strftime("%d/%m/%Y %H:%M") %> &middot; <%= number_to_human_size(file.byte_size) %></div>
+                </div>
+                <%= link_to "Download", rails_blob_path(file, disposition: "attachment"), class: "text-blue-600 hover:underline text-xs" %>
+                <%= button_to "Remove", purge_file_issue_path(@issue, file_id: file.id), method: :delete, form: { data: { turbo_confirm: "Remove this file?" } }, class: "text-red-500 hover:underline text-xs ml-2" %>
+              </div>
             <% end %>
           </div>
         <% else %>

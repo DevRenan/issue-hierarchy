@@ -1,7 +1,17 @@
 Rails.application.routes.draw do
+  resource :pdf_import, only: [:new, :create] do
+    get :result, on: :collection
+  end
   resources :attachments
   resources :comments
-  resources :issues
+  resources :issues do
+    collection do
+      get :kanban
+    end
+    member do
+      delete 'purge_file/:file_id', to: 'issues#purge_file', as: :purge_file
+    end
+  end
   resources :nodes
   resources :workspaces
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

@@ -1,0 +1,22 @@
+<%# status, issues %>
+<%# Usa helpers para cor e badge %>
+<% column_color = kanban_column_color(status) %>
+<% status_label = status.titleize %>
+<% count = issues.size %>
+<div class="flex-1 min-w-[260px] max-w-xs">
+  <div class="mb-2 flex items-center gap-2">
+    <div class="font-bold text-sm px-2 py-1 rounded <%= column_color %> border">
+      <%= status_label %>
+    </div>
+    <span class="text-xs text-gray-500">(<%= count %>)</span>
+  </div>
+  <div class="space-y-3">
+    <% issues.each do |issue| %>
+      <%= render partial: "issue_card", locals: { issue: issue } %>
+    <% end %>
+    <% if issues.empty? %>
+      <div class="text-xs text-gray-400 italic py-4 text-center">No issues</div>
+    <% end %>
+  </div>
+</div>
+

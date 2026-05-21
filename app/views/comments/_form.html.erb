@@ -1,4 +1,6 @@
-<%= form_with(model: [issue, comment], local: false) do |f| %>
+<%= form_with(model: comment, local: false) do |f| %>
+  <%= f.hidden_field :issue_id, value: issue.id %>
+
   <div class="space-y-2">
     <div>
       <%= f.text_area :body, rows: 4, placeholder: "Add a comment...", class: "w-full border rounded-md px-3 py-2 text-sm" %>
