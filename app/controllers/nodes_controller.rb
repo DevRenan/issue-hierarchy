@@ -1,5 +1,6 @@
 class NodesController < ApplicationController
   before_action :set_node, only: %i[ show edit update destroy ]
+  before_action :set_workspace, only: %i[ show index new edit ]
 
   # GET /nodes or /nodes.json
   def index
@@ -61,6 +62,14 @@ class NodesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_node
       @node = Node.find(params.expect(:id))
+    end
+
+    def set_workspace
+      @workspace = if @node
+                     @node.workspace
+                   elsif params[:workspace_id]
+                     Workspace.find(params[:workspace_id])
+                   end
     end
 
     # Only allow a list of trusted parameters through.

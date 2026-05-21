@@ -1,14 +1,19 @@
-<div id="<%= dom_id attachment %>" class="w-full sm:w-auto my-5 space-y-5">
-  <div>
-    <strong class="block font-medium mb-1">Issue:</strong>
-    <%= attachment.issue_id %>
+<div class="flex items-center gap-3">
+  <div class="h-10 w-10 rounded-md bg-gray-100 flex items-center justify-center text-gray-600">
+    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21.44 11.05l-8.49 8.49a4.5 4.5 0 0 1-6.36-6.36l7.78-7.78a3 3 0 1 1 4.24 4.24l-7.07 7.07" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </div>
-  <div>
-    <strong class="block font-medium mb-1">Name:</strong>
-    <%= attachment.name %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">File path:</strong>
-    <%= attachment.file_path %>
+
+  <div class="flex-1 text-sm">
+    <div class="flex items-center justify-between">
+      <div>
+        <%= attachment.name || attachment.file_path || attachment.id %>
+      </div>
+      <div class="text-xs text-gray-500">
+        <%= number_to_human_size(attachment.file_size || 0) %>
+      </div>
+    </div>
+    <div class="text-xs text-gray-500 mt-1">
+      <%= link_to "Download", attachment_path(attachment), class: "text-blue-600 hover:underline" %>
+    </div>
   </div>
 </div>

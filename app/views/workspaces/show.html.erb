@@ -1,15 +1,63 @@
-<% content_for :title, "Showing workspace" %>
+<% content_for :title, @workspace.name %>
 
-<div class="md:w-2/3 w-full">
+<div class="mb-4">
   <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+    <p class="py-2 px-3 bg-green-50 text-green-600 rounded-md inline-block"><%= notice %></p>
   <% end %>
+</div>
 
-  <h1 class="font-bold text-4xl">Showing workspace</h1>
+<header class="flex items-center justify-between mb-6">
+  <div>
+    <h1 class="text-2xl font-bold"><%= @workspace.name %></h1>
+    <p class="text-sm text-gray-600"><%= @workspace.description %></p>
+  </div>
 
-  <%= render @workspace %>
+  <div class="flex items-center gap-2">
+    <%= link_to "Edit", edit_workspace_path(@workspace), class: "px-3 py-2 bg-gray-100 rounded-md text-sm" %>
+    <%= link_to "New node", new_node_path(workspace_id: @workspace.id), class: "px-3 py-2 bg-blue-600 text-white rounded-md text-sm" %>
+  </div>
+</header>
 
-  <%= link_to "Edit this workspace", edit_workspace_path(@workspace), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= link_to "Back to workspaces", workspaces_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= button_to "Destroy this workspace", @workspace, method: :delete, form_class: "sm:inline-block mt-2 sm:mt-0 sm:ml-2", class: "w-full rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <div class="lg:col-span-1">
+    <div class="bg-white border rounded-lg p-4 shadow-sm">
+      <h3 class="text-sm font-semibold mb-3">Structure</h3>
+      <p class="text-xs text-gray-500 mb-3">Click on a node to view its details and issues</p>
+      <div class="text-sm text-gray-700">
+        <%= turbo_frame_tag "node_tree" do %>
+          <% if @workspace.nodes.roots.any? %>
+            <%= render partial: "nodes/tree", locals: { nodes: @workspace.nodes.roots } %>
+          <% else %>
+            <p class="text-sm text-gray-400">No nodes yet. Create one to get started.</p>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="lg:col-span-1">
+    <div class="bg-white border rounded-lg p-4 shadow-sm">
+      <h3 class="text-sm font-semibold mb-3">Getting Started</h3>
+      <div class="space-y-3 text-sm text-gray-600">
+        <p>
+          <strong>Workspaces</strong> organize your work into separate projects or contexts.
+        </p>
+        <p>
+          <strong>Nodes</strong> represent your project structure (like folders, phases, or components).
+        </p>
+        <p>
+          <strong>Issues</strong> are tasks, bugs, or work items associated with nodes.
+        </p>
+        <hr class="my-3" />
+        <div class="space-y-2">
+          <p class="font-semibold">Next steps:</p>
+          <ol class="list-decimal list-inside space-y-1 text-xs">
+            <li><%= link_to "Create a new node", new_node_path(workspace_id: @workspace.id), class: "text-blue-600 hover:underline" %></li>
+            <li>Click on a node to view details</li>
+            <li><%= link_to "Create an issue", new_issue_path(workspace_id: @workspace.id), class: "text-blue-600 hover:underline" %> within a node</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

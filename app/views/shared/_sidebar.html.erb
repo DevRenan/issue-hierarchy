@@ -1,0 +1,34 @@
+<div class="sticky top-20">
+  <div class="bg-white border rounded-lg p-4 shadow-sm">
+	<div class="flex items-center justify-between mb-3">
+	  <h3 class="text-sm font-semibold">Workspaces</h3>
+	  <%= link_to "New", new_workspace_path, class: "text-xs text-blue-600 hover:underline" %>
+	</div>
+
+	<div class="space-y-2">
+	  <% @workspaces ||= Workspace.limit(10) %>
+	  <% @workspaces.each do |ws| %>
+		<div class="flex items-center justify-between">
+		  <%= link_to ws.name, workspace_path(ws), class: "text-sm text-gray-700 hover:underline" %>
+		  <%= link_to "Open", workspace_path(ws), class: "text-xs text-gray-500 hover:text-gray-700" %>
+		</div>
+	  <% end %>
+	</div>
+  </div>
+
+  <% if defined?(@workspace) && @workspace.present? %>
+	<div class="mt-4">
+	  <div class="flex items-center justify-between text-sm font-semibold mb-2">
+		<span>Structure</span>
+		<%= link_to "New node", new_node_path(workspace_id: @workspace.id), class: "text-xs text-blue-600" %>
+	  </div>
+
+	  <div class="bg-white border rounded-lg p-2 shadow-sm">
+		<%= turbo_frame_tag "node_tree" do %>
+		  <%= render partial: "nodes/tree", locals: { nodes: @workspace.nodes.roots } %>
+		<% end %>
+	  </div>
+	</div>
+  <% end %>
+</div>
+

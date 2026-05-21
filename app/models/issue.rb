@@ -5,14 +5,14 @@ class Issue < ApplicationRecord
   has_many :comments, dependent: :destroy
   has_many :attachments, dependent: :destroy
 
-  enum status: {
+  enum :status, {
     open: 0,
     in_progress: 1,
     resolved: 2,
     closed: 3
   }
 
-  enum priority: {
+  enum :priority, {
     low: 0,
     medium: 1,
     high: 2,

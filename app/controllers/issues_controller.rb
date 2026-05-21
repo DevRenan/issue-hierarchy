@@ -1,5 +1,6 @@
 class IssuesController < ApplicationController
   before_action :set_issue, only: %i[ show edit update destroy ]
+  before_action :set_workspace, only: %i[ show ]
 
   # GET /issues or /issues.json
   def index
@@ -12,7 +13,10 @@ class IssuesController < ApplicationController
 
   # GET /issues/new
   def new
-    @issue = Issue.new
+    @issue = Issue.new(
+      workspace_id: params[:workspace_id],
+      node_id: params[:node_id]
+    )
   end
 
   # GET /issues/1/edit
@@ -61,6 +65,10 @@ class IssuesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_issue
       @issue = Issue.find(params.expect(:id))
+    end
+
+    def set_workspace
+      @workspace = @issue&.workspace
     end
 
     # Only allow a list of trusted parameters through.

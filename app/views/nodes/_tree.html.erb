@@ -1,12 +1,7 @@
-<ul>
+<ul class="space-y-1" role="group">
   <% nodes.each do |node| %>
     <li>
-      <%= node.name %>
-
-      <% if node.children.any? %>
-        <%= render partial: "tree",
-                   locals: { nodes: node.children } %>
-      <% end %>
+      <%= render partial: "nodes/node_item", locals: { node: node } %>
     </li>
   <% end %>
 </ul>

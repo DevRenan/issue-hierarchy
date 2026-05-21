@@ -2,28 +2,46 @@
 
 <div class="w-full">
   <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+    <p class="py-2 px-3 bg-green-50 text-green-600 rounded-md inline-block mb-4"><%= notice %></p>
   <% end %>
 
-  <div class="flex justify-between items-center">
-    <h1 class="font-bold text-4xl">Workspaces</h1>
-    <%= link_to "New workspace", new_workspace_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
+  <div class="flex justify-between items-center mb-6">
+    <div>
+      <h1 class="text-3xl font-bold">Workspaces</h1>
+      <p class="text-sm text-gray-600 mt-1">Manage your projects and work areas</p>
+    </div>
+    <%= link_to "New workspace", new_workspace_path, class: "px-3 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-md font-medium" %>
   </div>
 
-  <div id="workspaces" class="min-w-full divide-y divide-gray-200 space-y-5">
+  <div id="workspaces">
     <% if @workspaces.any? %>
-      <% @workspaces.each do |workspace| %>
-        <div class="flex flex-col sm:flex-row justify-between items-center pb-5 sm:pb-0">
-          <%= render workspace %>
-          <div class="w-full sm:w-auto flex flex-col sm:flex-row space-x-2 space-y-2">
-            <%= link_to "Show", workspace, class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-            <%= link_to "Edit", edit_workspace_path(workspace), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-            <%= button_to "Destroy", workspace, method: :delete, class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <% @workspaces.each do |workspace| %>
+          <div class="bg-white border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
+            <div class="flex items-start justify-between mb-2">
+              <div>
+                <h3 class="font-semibold text-lg"><%= workspace.name %></h3>
+                <p class="text-sm text-gray-600 mt-1"><%= truncate(workspace.description.to_s, length: 100) %></p>
+              </div>
+            </div>
+
+            <div class="mt-4 text-xs text-gray-500 mb-4">
+              <span><%= workspace.nodes.count %> nodes</span>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <%= link_to "Open", workspace_path(workspace), data: { turbo_frame: "content" }, class: "flex-1 text-center px-3 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-500" %>
+              <%= link_to "Edit", edit_workspace_path(workspace), class: "px-3 py-2 bg-gray-100 rounded-md text-sm hover:bg-gray-200" %>
+              <%= button_to "Delete", workspace, method: :delete, class: "px-3 py-2 bg-red-50 text-red-600 rounded-md text-sm hover:bg-red-100", data: { turbo_confirm: "Are you sure?" } %>
+            </div>
           </div>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
     <% else %>
-      <p class="text-center my-10">No workspaces found.</p>
+      <div class="bg-white border rounded-lg p-8 text-center">
+        <p class="text-gray-500 mb-4">No workspaces yet. Create your first one to get started!</p>
+        <%= link_to "Create Workspace", new_workspace_path, class: "inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500" %>
+      </div>
     <% end %>
   </div>
 </div>

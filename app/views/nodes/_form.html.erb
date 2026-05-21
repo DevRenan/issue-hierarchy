@@ -1,7 +1,44 @@
-<%= form.collection_select(
-      :parent_id,
-      Node.all,
-      :id,
-      :name,
-      include_blank: true
-    ) %>
+<%= form_with(model: node, local: true) do |form| %>
+  <% if node.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-600 px-3 py-2 rounded-md mb-4">
+      <h2 class="font-semibold"><%= pluralize(node.errors.count, "error") %> prohibited this node from being saved:</h2>
+      <ul class="list-disc ml-6 mt-2">
+        <% node.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="space-y-4">
+    <div>
+      <%= form.label :workspace_id %>
+      <%= form.select :workspace_id, Workspace.pluck(:name, :id), { include_blank: true }, class: "block w-full border rounded-md px-3 py-2 mt-1" %>
+    </div>
+
+    <div>
+      <%= form.label :name %>
+      <%= form.text_field :name, class: "block w-full border rounded-md px-3 py-2 mt-1" %>
+    </div>
+
+    <div>
+      <%= form.label :description %>
+      <%= form.text_area :description, rows: 4, class: "block w-full border rounded-md px-3 py-2 mt-1" %>
+    </div>
+
+    <div>
+      <%= form.label :node_type %>
+      <%= form.text_field :node_type, class: "block w-full border rounded-md px-3 py-2 mt-1", placeholder: "e.g., Project, Phase, Feature" %>
+    </div>
+
+    <div>
+      <%= form.label :parent_id, "Parent Node (optional)" %>
+      <%= form.collection_select :parent_id, Node.all, :id, :name, { include_blank: true }, class: "block w-full border rounded-md px-3 py-2 mt-1" %>
+    </div>
+
+    <div class="flex gap-2 mt-6">
+      <%= form.submit class: "px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500" %>
+      <%= link_to "Cancel", nodes_path, class: "px-4 py-2 bg-gray-100 rounded-md hover:bg-gray-200" %>
+    </div>
+  </div>
+<% end %>

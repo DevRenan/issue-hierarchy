@@ -1,0 +1,25 @@
+<div class="flex items-center justify-between h-16">
+  <div class="flex items-center gap-4">
+    <a href="<%= workspaces_path %>" class="flex items-center gap-3">
+      <img src="/icon.svg" alt="logo" class="h-8 w-8"/>
+      <span class="font-semibold text-lg">IssueTrack</span>
+    </a>
+
+    <form action="<%= issues_path %>" method="get" class="hidden sm:flex items-center">
+      <label for="q" class="sr-only">Search</label>
+      <input id="q" name="q" placeholder="Search issues or nodes" class="px-3 py-2 rounded-md border border-gray-200 bg-white text-sm focus:outline-none focus:ring-1 focus:ring-blue-500" />
+    </form>
+  </div>
+
+  <div class="flex items-center gap-3">
+    <%= link_to "New issue", new_issue_path, class: "hidden sm:inline-flex items-center px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500" %>
+
+    <div class="text-sm text-gray-600">
+      <button class="flex items-center gap-2 rounded-full p-1 hover:bg-gray-100">
+        <span class="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center">U</span>
+        <span class="hidden sm:inline">You</span>
+      </button>
+    </div>
+  </div>
+</div>
+

@@ -1,15 +1,61 @@
-<% content_for :title, "Showing issue" %>
+<% content_for :title, @issue.title %>
 
-<div class="md:w-2/3 w-full">
-  <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
-  <% end %>
+<div class="space-y-4">
+  <div class="bg-white border rounded-lg p-4 shadow-sm">
+    <div class="flex items-start justify-between">
+      <div>
+        <h1 class="text-xl font-semibold"><%= @issue.title %></h1>
+        <div class="mt-1 text-sm text-gray-600">
+          <span>Node: </span>
+          <%= link_to @issue.node.name, node_path(@issue.node), data: { turbo_frame: "content" }, class: "text-gray-700" if @issue.node %>
+        </div>
+      </div>
 
-  <h1 class="font-bold text-4xl">Showing issue</h1>
+      <div class="text-right space-y-2">
+        <div><%= status_badge(@issue.status) %></div>
+        <div><%= priority_badge(@issue.priority) %></div>
+      </div>
+    </div>
 
-  <%= render @issue %>
+    <div class="mt-4 text-sm text-gray-700">
+      <%= simple_format(@issue.description) %>
+    </div>
 
-  <%= link_to "Edit this issue", edit_issue_path(@issue), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= link_to "Back to issues", issues_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= button_to "Destroy this issue", @issue, method: :delete, form_class: "sm:inline-block mt-2 sm:mt-0 sm:ml-2", class: "w-full rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+    <div class="mt-4 flex gap-2">
+      <%= link_to "Edit", edit_issue_path(@issue), class: "px-3 py-2 bg-gray-100 rounded-md text-sm" %>
+      <%= link_to "Back", workspace_path(@issue.workspace), data: { turbo_frame: "content" }, class: "px-3 py-2 bg-white rounded-md text-sm" %>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+    <div class="lg:col-span-2 space-y-4">
+      <div class="bg-white border rounded-lg p-4 shadow-sm">
+        <h3 class="font-semibold mb-3">Comments</h3>
+        <div class="space-y-3">
+          <% @issue.comments.order(created_at: :asc).each do |comment| %>
+            <%= render partial: "comments/comment", locals: { comment: comment } %>
+          <% end %>
+        </div>
+
+        <div class="mt-4">
+          <%= render partial: "comments/form", locals: { comment: @issue.comments.build, issue: @issue } %>
+        </div>
+      </div>
+    </div>
+
+    <aside class="lg:col-span-1">
+      <div class="bg-white border rounded-lg p-4 shadow-sm">
+        <h3 class="font-semibold mb-3">Attachments</h3>
+        <% if @issue.attachments.any? %>
+          <div class="space-y-2">
+            <% @issue.attachments.each do |att| %>
+              <%= render partial: "attachments/attachment", locals: { attachment: att } %>
+            <% end %>
+          </div>
+        <% else %>
+          <p class="text-sm text-gray-500">No attachments</p>
+        <% end %>
+      </div>
+    </aside>
+  </div>
 </div>

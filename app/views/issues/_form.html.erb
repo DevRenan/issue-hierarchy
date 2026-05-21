@@ -1,9 +1,8 @@
-<%= form_with(model: issue, class: "contents") do |form| %>
+<%= form_with(model: issue, local: true) do |form| %>
   <% if issue.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-      <h2><%= pluralize(issue.errors.count, "error") %> prohibited this issue from being saved:</h2>
-
-      <ul class="list-disc ml-6">
+    <div class="bg-red-50 text-red-600 px-3 py-2 rounded-md mb-4">
+      <h2 class="font-semibold"><%= pluralize(issue.errors.count, "error") %> prohibited this issue from being saved:</h2>
+      <ul class="list-disc ml-6 mt-2">
         <% issue.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
@@ -11,37 +10,42 @@
     </div>
   <% end %>
 
-  <div class="my-5">
-    <%= form.label :workspace_id %>
-    <%= form.text_field :workspace_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": issue.errors[:workspace_id].none?, "border-red-400 focus:outline-red-600": issue.errors[:workspace_id].any?}] %>
-  </div>
+  <div class="space-y-4">
+    <div>
+      <%= form.label :workspace_id %>
+      <%= form.select :workspace_id, Workspace.pluck(:name, :id), { include_blank: true }, class: "block w-full border rounded-md px-3 py-2 mt-1" %>
+    </div>
 
-  <div class="my-5">
-    <%= form.label :node_id %>
-    <%= form.text_field :node_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": issue.errors[:node_id].none?, "border-red-400 focus:outline-red-600": issue.errors[:node_id].any?}] %>
-  </div>
+    <div>
+      <%= form.label :node_id %>
+      <%= form.collection_select :node_id, Node.all, :id, :name, { include_blank: true }, class: "block w-full border rounded-md px-3 py-2 mt-1" %>
+    </div>
 
-  <div class="my-5">
-    <%= form.label :title %>
-    <%= form.text_field :title, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": issue.errors[:title].none?, "border-red-400 focus:outline-red-600": issue.errors[:title].any?}] %>
-  </div>
+    <div>
+      <%= form.label :title %>
+      <%= form.text_field :title, class: "block w-full border rounded-md px-3 py-2 mt-1" %>
+    </div>
 
-  <div class="my-5">
-    <%= form.label :description %>
-    <%= form.textarea :description, rows: 4, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": issue.errors[:description].none?, "border-red-400 focus:outline-red-600": issue.errors[:description].any?}] %>
-  </div>
+    <div>
+      <%= form.label :description %>
+      <%= form.text_area :description, rows: 5, class: "block w-full border rounded-md px-3 py-2 mt-1" %>
+    </div>
 
-  <div class="my-5">
-    <%= form.label :status %>
-    <%= form.number_field :status, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": issue.errors[:status].none?, "border-red-400 focus:outline-red-600": issue.errors[:status].any?}] %>
-  </div>
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <%= form.label :status %>
+        <%= form.select :status, Issue.statuses.keys, {}, class: "block w-full border rounded-md px-3 py-2 mt-1" %>
+      </div>
 
-  <div class="my-5">
-    <%= form.label :priority %>
-    <%= form.number_field :priority, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": issue.errors[:priority].none?, "border-red-400 focus:outline-red-600": issue.errors[:priority].any?}] %>
-  </div>
+      <div>
+        <%= form.label :priority %>
+        <%= form.select :priority, Issue.priorities.keys, {}, class: "block w-full border rounded-md px-3 py-2 mt-1" %>
+      </div>
+    </div>
 
-  <div class="inline">
-    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+    <div class="flex gap-2 mt-6">
+      <%= form.submit class: "px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500" %>
+      <%= link_to "Cancel", issues_path, class: "px-4 py-2 bg-gray-100 rounded-md hover:bg-gray-200" %>
+    </div>
   </div>
 <% end %>

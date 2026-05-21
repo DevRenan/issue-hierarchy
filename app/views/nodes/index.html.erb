@@ -1,2 +1,19 @@
-<%= render partial: "tree",
-           locals: { nodes: @workspace.nodes.roots } %>
+<% content_for :title, @workspace.name %>
+
+<div class="w-full">
+  <div class="flex justify-between items-center mb-6">
+    <div>
+      <h1 class="text-3xl font-bold"><%= @workspace.name %></h1>
+      <p class="text-sm text-gray-600 mt-1">Workspace structure</p>
+    </div>
+    <%= link_to "New node", new_node_path(workspace_id: @workspace.id), class: "px-3 py-2 bg-blue-600 text-white rounded-md font-medium" %>
+  </div>
+
+  <div class="bg-white border rounded-lg p-4 shadow-sm">
+    <% if @workspace.nodes.roots.any? %>
+      <%= render partial: "tree", locals: { nodes: @workspace.nodes.roots } %>
+    <% else %>
+      <p class="text-gray-500">No nodes in this workspace. <%= link_to "Create one", new_node_path(workspace_id: @workspace.id), class: "text-blue-600 hover:underline" %></p>
+    <% end %>
+  </div>
+</div>

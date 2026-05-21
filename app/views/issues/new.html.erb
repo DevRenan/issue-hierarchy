@@ -1,9 +1,10 @@
-<% content_for :title, "New issue" %>
+<% content_for :title, "New Issue" %>
 
-<div class="md:w-2/3 w-full">
-  <h1 class="font-bold text-4xl">New issue</h1>
+<div class="max-w-2xl">
+  <div class="bg-white border rounded-lg p-6 shadow-sm">
+    <h1 class="text-2xl font-bold mb-4">Create a New Issue</h1>
+    <p class="text-sm text-gray-600 mb-6">Issues track work, bugs, and tasks within your nodes.</p>
 
-  <%= render "form", issue: @issue %>
-
-  <%= link_to "Back to issues", issues_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+    <%= render "form", issue: @issue %>
+  </div>
 </div>

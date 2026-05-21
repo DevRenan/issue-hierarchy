@@ -1,0 +1,10 @@
+<% if issues.any? %>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <% issues.each do |issue| %>
+      <%= render partial: "issues/issue_card", locals: { issue: issue } %>
+    <% end %>
+  </div>
+<% else %>
+  <p class="text-sm text-gray-500">No issues found.</p>
+<% end %>
+
