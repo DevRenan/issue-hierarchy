@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+
+  root "issues#kanban"
   resource :pdf_import, only: [:new, :create] do
     get :result, on: :collection
   end
