@@ -28,6 +28,7 @@ gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "aws-sdk-s3", require: false
 gem "dotenv-rails"
 
+
 # Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
 gem "solid_cache"
 gem "solid_queue"
@@ -46,6 +47,7 @@ gem "thruster", require: false
 gem "image_processing", "~> 1.2"
 
 gem "ancestry"
+gem "rails_12factor", group: :production
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

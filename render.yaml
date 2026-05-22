@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: issue-hierarchy
+    runtime: ruby
+    runtimeVersion: 3.3.0
+    buildCommand: "bundle install && bundle exec rake assets:precompile"
+    startCommand: "bundle exec puma -t 5:5 -w 1"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: issue-hierarchy-db
+          property: connectionString
+      - key: RAILS_ENV
+        value: production
+      - key: RAILS_LOG_TO_STDOUT
+        value: "true"
+      - key: WEB_CONCURRENCY
+        value: "1"
+
+databases:
+  - name: issue-hierarchy-db
+    engine: postgres
+    version: 15
